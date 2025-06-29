@@ -1,0 +1,52 @@
+{
+  "name": "vue-permissions",
+  "version": "1.0.0",
+  "description": "A flexible Vue.js directive for handling user permissions with multiple validation modes",
+  "main": "dist/index.js",
+  "module": "dist/index.esm.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "rollup -c",
+    "build:watch": "rollup -c -w",
+    "prepublishOnly": "npm run build",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "vue",
+    "vue3",
+    "kz-tools",
+    "kz-packages",
+    "directive",
+    "permission",
+    "authorization",
+    "access-control",
+    "rbac"
+  ],
+  "author": "Your Name <your.email@example.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/vue-permission-directive.git"
+  },
+  "bugs": {
+    "url": "https://github.com/yourusername/vue-permission-directive/issues"
+  },
+  "homepage": "https://github.com/yourusername/vue-permission-directive#readme",
+  "peerDependencies": {
+    "vue": "^3.0.0"
+  },
+  "devDependencies": {
+    "@rollup/plugin-typescript": "^11.1.6",
+    "rollup": "^4.12.0",
+    "rollup-plugin-dts": "^6.1.0",
+    "typescript": "^5.3.3",
+    "vue": "^3.4.0"
+  },
+  "engines": {
+    "node": ">=16"
+  }
+}

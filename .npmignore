@@ -1,0 +1,37 @@
+# Source files
+src/
+*.ts
+!dist/*.d.ts
+
+# Config files
+tsconfig.json
+rollup.config.js
+.eslintrc.*
+.prettier*
+
+# Development
+node_modules/
+.vscode/
+.idea/
+
+# Tests
+test/
+tests/
+__tests__/
+*.test.*
+*.spec.*
+
+# Documentation source
+docs/
+
+# Logs
+*.log
+npm-debug.log*
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Git
+.git/
+.gitignore
