@@ -1,7 +1,7 @@
 {
-  "name": "vue-permissions",
+  "name": "vue-permission-directive",
   "version": "1.0.0",
-  "description": "A flexible Vue.js directive for handling user permissions with multiple validation modes",
+  "description": "A flexible Vue 3 directive for managing user permissions with support for AND, OR, regex, and pattern-based checks.",
   "main": "dist/index.js",
   "module": "dist/index.esm.js",
   "types": "dist/index.d.ts",
@@ -13,29 +13,37 @@
     "build": "rollup -c",
     "build:watch": "rollup -c -w",
     "prepublishOnly": "npm run build",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"No test specified\" && exit 0"
   },
   "keywords": [
     "vue",
     "vue3",
-    "kz-tools",
-    "kz-packages",
+    "vue-directive",
     "directive",
     "permission",
+    "permissions",
     "authorization",
     "access-control",
-    "rbac"
+    "rbac",
+    "acl",
+    "vue-permission",
+    "vue-permission-directive",
+    "vue-access-control",
+    "vue-rbac",
+    "vue-plugin",
+    "kz-tools",
+    "kz-packages"
   ],
-  "author": "Your Name <your.email@example.com>",
+  "author": "Kerolos Zakaria <keroloszakaria2@gmail.com>",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/yourusername/vue-permission-directive.git"
+    "url": "https://github.com/keroloszakaria/vue-permission-directive.git"
   },
   "bugs": {
-    "url": "https://github.com/yourusername/vue-permission-directive/issues"
+    "url": "https://github.com/keroloszakaria/vue-permission-directive/issues"
   },
-  "homepage": "https://github.com/yourusername/vue-permission-directive#readme",
+  "homepage": "https://github.com/keroloszakaria/vue-permission-directive#readme",
   "peerDependencies": {
     "vue": "^3.0.0"
   },
