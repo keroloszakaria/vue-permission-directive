@@ -10,6 +10,7 @@ export default [
         file: "dist/index.js",
         format: "cjs",
         exports: "named",
+        interop: "auto",
       },
       {
         file: "dist/index.esm.js",
@@ -17,7 +18,11 @@ export default [
       },
     ],
     external: ["vue"],
-    plugins: [typescript()],
+    plugins: [
+      typescript({
+        tsconfig: "./tsconfig.build.json",
+      }),
+    ],
   },
   // Build type definitions
   {
@@ -26,6 +31,7 @@ export default [
       file: "dist/index.d.ts",
       format: "es",
     },
+    external: ["vue"],
     plugins: [dts()],
   },
 ];

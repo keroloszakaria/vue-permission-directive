@@ -33,12 +33,18 @@ const app = createApp(App);
 
 // Configure with your permissions array
 const userPermissions = ["read", "write", "admin.users"];
-configurePermissionDirective(userPermissions);
+configurePermissionDirective(userPermissions, { developmentMode: true });
+
+// Or configure development mode separately
+import { setDevelopmentMode } from "vue-permission-directive";
+setDevelopmentMode(import.meta.env.DEV); // For Vite
+// or
+setDevelopmentMode(process.env.NODE_ENV === "development"); // For other bundlers
 
 // Or with a reactive ref
 import { ref } from "vue";
 const userPermissions = ref(["read", "write"]);
-configurePermissionDirective(userPermissions);
+configurePermissionDirective(userPermissions, { developmentMode: true });
 
 // Register the directive
 app.directive("permission", vPermission);
@@ -70,27 +76,45 @@ app.mount("#app");
 
 ### Configuration
 
-#### `configurePermissionDirective(permissions)`
+#### `configurePermissionDirective(permissions, options?)`
 
-Configure the directive with user permissions.
+Configure the directive with user permissions and options.
 
 **Parameters:**
 
 - `permissions`: `string[] | Ref<string[]>` - Array of user permissions or a Vue ref
+- `options?`: `{ developmentMode?: boolean }` - Configuration options
 
 **Example:**
 
 ```javascript
-import { configurePermissionDirective } from "vue-permission-directive";
+import {
+  configurePermissionDirective,
+  setDevelopmentMode,
+} from "vue-permission-directive";
 
-// Static array
-configurePermissionDirective(["read", "write", "admin"]);
+// With development mode enabled
+configurePermissionDirective(["read", "write", "admin"], {
+  developmentMode: true,
+});
+
+// Or set development mode separately
+setDevelopmentMode(import.meta.env.DEV); // Vite
+setDevelopmentMode(process.env.NODE_ENV === "development"); // Webpack/others
 
 // Reactive ref
 import { ref } from "vue";
 const permissions = ref(["read", "write"]);
-configurePermissionDirective(permissions);
+configurePermissionDirective(permissions, { developmentMode: true });
 ```
+
+#### `setDevelopmentMode(enabled)`
+
+Enable or disable development warnings.
+
+**Parameters:**
+
+- `enabled`: `boolean` - Whether to show development warnings
 
 ### Directive Usage
 
@@ -255,7 +279,9 @@ import { useAuthStore } from "@/stores/auth";
 import { configurePermissionDirective } from "vue-permission-directive";
 
 const authStore = useAuthStore();
-configurePermissionDirective(authStore.permissions);
+configurePermissionDirective(authStore.permissions, {
+  developmentMode: import.meta.env.DEV,
+});
 ```
 
 ### With Vuex
@@ -266,7 +292,10 @@ import store from "@/store";
 import { configurePermissionDirective } from "vue-permission-directive";
 
 // Assuming permissions are in store.state.auth.permissions
-configurePermissionDirective(computed(() => store.state.auth.permissions));
+configurePermissionDirective(
+  computed(() => store.state.auth.permissions),
+  { developmentMode: process.env.NODE_ENV === "development" }
+);
 ```
 
 ### Dynamic Permission Updates
@@ -274,12 +303,15 @@ configurePermissionDirective(computed(() => store.state.auth.permissions));
 ```vue
 <script setup>
 import { ref } from "vue";
-import { configurePermissionDirective } from "vue-permission-directive";
+import {
+  configurePermissionDirective,
+  setDevelopmentMode,
+} from "vue-permission-directive";
 
 const userPermissions = ref(["read"]);
 
 // Configure directive with reactive permissions
-configurePermissionDirective(userPermissions);
+configurePermissionDirective(userPermissions, { developmentMode: true });
 
 // Update permissions dynamically
 const addWritePermission = () => {

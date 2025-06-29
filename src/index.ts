@@ -8,10 +8,20 @@ import {
 
 let globalConfig: GlobalConfig = { permissions: null };
 
+// Configuration for development warnings
+let isDevelopmentMode = false;
+
 export const configurePermissionDirective = (
-  permissions: PermissionsArray
+  permissions: PermissionsArray,
+  options?: { developmentMode?: boolean }
 ): void => {
   globalConfig.permissions = permissions;
+  isDevelopmentMode = options?.developmentMode ?? false;
+};
+
+// Alternative function to set development mode separately
+const setDevelopmentMode = (enabled: boolean): void => {
+  isDevelopmentMode = enabled;
 };
 
 const vPermission: Directive = {
@@ -20,7 +30,7 @@ const vPermission: Directive = {
 
     const permissions = globalConfig.permissions;
     const devWarn = (message: string) => {
-      if (process.env.NODE_ENV === "development") {
+      if (isDevelopmentMode) {
         console.warn(`[v-permission]: ${message}`, { value, element: el });
       }
     };
@@ -262,4 +272,4 @@ const vPermission: Directive = {
 };
 
 export default vPermission;
-export { vPermission };
+export { vPermission, setDevelopmentMode };
