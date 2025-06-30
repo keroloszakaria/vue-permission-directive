@@ -10,6 +10,7 @@ A flexible Vue.js directive for handling user permissions with multiple validati
 - 🎨 **Flexible API**: Support for strings, arrays, and complex objects
 - 🔧 **Development warnings**: Helpful warnings in development mode
 - 🚀 **Vue 3 compatible**: Built for Vue 3 with Composition API support
+- ⚡ **Nuxt 3 support**: Easy integration with Nuxt.js projects
 
 ## Installation
 
@@ -20,6 +21,8 @@ npm install vue-permission-directive
 ## Quick Start
 
 ### 1. Install and configure the directive
+
+#### For Vue 3
 
 ```javascript
 // main.js
@@ -49,7 +52,58 @@ configurePermissionDirective(userPermissions, { developmentMode: true });
 // Register the directive
 app.directive("permission", vPermission);
 
+// ⚠️ IMPORTANT: Configure permissions BEFORE mounting the app
+configurePermissionDirective(authStore.permissions, {
+  developmentMode: process.env.NODE_ENV === "development",
+});
+
 app.mount("#app");
+```
+
+#### For Nuxt 3
+
+Create a global directive plugin:
+
+```typescript
+// plugins/directives.global.ts
+import { defineNuxtPlugin } from "#app";
+import vPermission, {
+  configurePermissionDirective,
+} from "vue-permission-directive";
+
+export default defineNuxtPlugin((nuxtApp) => {
+  // Configure permissions (replace with your actual permissions source)
+  const userPermissions = ["read", "write", "admin.users"];
+  configurePermissionDirective(userPermissions, {
+    developmentMode: process.env.NODE_ENV === "development",
+  });
+
+  // Register the directive
+  nuxtApp.vueApp.directive("permission", vPermission);
+});
+```
+
+Or if you prefer a separate directive file:
+
+```typescript
+// directives/permission.ts
+import vPermission from "vue-permission-directive";
+export default vPermission;
+
+// plugins/directives.global.ts
+import { defineNuxtPlugin } from "#app";
+import permissionDirective from "@/directives/permission";
+import { configurePermissionDirective } from "vue-permission-directive";
+
+export default defineNuxtPlugin((nuxtApp) => {
+  // Configure permissions
+  const userPermissions = ["read", "write", "admin.users"];
+  configurePermissionDirective(userPermissions, {
+    developmentMode: process.env.NODE_ENV === "development",
+  });
+
+  nuxtApp.vueApp.directive("permission", permissionDirective);
+});
 ```
 
 ### 2. Use in templates
@@ -255,7 +309,7 @@ const objectPermission: PermissionValue = {
 
 ## Examples
 
-### With Pinia Store
+### With Pinia Store (Vue 3)
 
 ```javascript
 // stores/auth.js
@@ -281,6 +335,22 @@ import { configurePermissionDirective } from "vue-permission-directive";
 const authStore = useAuthStore();
 configurePermissionDirective(authStore.permissions, {
   developmentMode: import.meta.env.DEV,
+});
+```
+
+### With Pinia Store (Nuxt 3)
+
+```typescript
+// plugins/permission.client.ts
+import { useAuthStore } from "@/stores/auth";
+import { configurePermissionDirective } from "vue-permission-directive";
+
+export default defineNuxtPlugin(() => {
+  const authStore = useAuthStore();
+
+  configurePermissionDirective(authStore.permissions, {
+    developmentMode: process.env.NODE_ENV === "development",
+  });
 });
 ```
 
@@ -326,6 +396,42 @@ const addWritePermission = () => {
 
   <button @click="addWritePermission">Add Write Permission</button>
 </template>
+```
+
+## Important Notes
+
+### Configuration Order
+
+⚠️ **Always configure permissions before mounting your Vue app or before the directive is used:**
+
+```javascript
+// Vue 3 - CORRECT order
+configurePermissionDirective(permissions, {
+  developmentMode: process.env.NODE_ENV === "development",
+});
+app.mount("#app");
+
+// Nuxt 3 - Configure in plugins
+// plugins/directives.global.ts
+export default defineNuxtPlugin((nuxtApp) => {
+  configurePermissionDirective(permissions);
+  nuxtApp.vueApp.directive("permission", vPermission);
+});
+```
+
+### Development Mode
+
+Enable development mode to get helpful warnings about:
+
+- Missing permission configuration
+- Invalid permission formats
+- Malformed regex patterns
+- Missing required properties
+
+```javascript
+configurePermissionDirective(permissions, {
+  developmentMode: process.env.NODE_ENV === "development",
+});
 ```
 
 ## Development
